@@ -367,13 +367,17 @@
 
     function getImageData(img, callback) {
         function handleBinaryFile(binFile) {
-            var data = findEXIFinJPEG(binFile);
-            img.exifdata = data || {};
-            var iptcdata = findIPTCinJPEG(binFile);
-            img.iptcdata = iptcdata || {};
-            if (EXIF.isXmpEnabled) {
-               var xmpdata= findXMPinJPEG(binFile);
-               img.xmpdata = xmpdata || {};               
+            try {
+                var data = findEXIFinJPEG(binFile);
+                img.exifdata = data || {};
+                var iptcdata = findIPTCinJPEG(binFile);
+                img.iptcdata = iptcdata || {};
+                if (EXIF.isXmpEnabled) {
+                    var xmpdata= findXMPinJPEG(binFile);
+                    img.xmpdata = xmpdata || {};
+                }
+            } catch (e) {
+                console.log(e);
             }
             if (callback) {
                 callback.call(img);
@@ -892,7 +896,7 @@
 
     function xml2json(xml) {
         var json = {};
-      
+
         if (xml.nodeType == 1) { // element node
           if (xml.attributes.length > 0) {
             json['@attributes'] = {};
@@ -904,7 +908,7 @@
         } else if (xml.nodeType == 3) { // text node
           return xml.nodeValue;
         }
-      
+
         // deal with children
         if (xml.hasChildNodes()) {
           for(var i = 0; i < xml.childNodes.length; i++) {
@@ -922,7 +926,7 @@
             }
           }
         }
-        
+
         return json;
     }
 
@@ -993,7 +997,7 @@
         if (!imageHasData(img)) return;
         return img.exifdata[tag];
     }
-    
+
     EXIF.getIptcTag = function(img, tag) {
         if (!imageHasData(img)) return;
         return img.iptcdata[tag];
@@ -1011,7 +1015,7 @@
         }
         return tags;
     }
-    
+
     EXIF.getAllIptcTags = function(img) {
         if (!imageHasData(img)) return {};
         var a,

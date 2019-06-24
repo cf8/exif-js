@@ -1,6 +1,6 @@
 {
-  "name": "exif-js",
-  "version": "2.3.0",
+  "name": "exif-js-gauch",
+  "version": "1.0.0",
   "description": "JavaScript library for reading EXIF image metadata",
   "main": "exif.js",
   "types": "exif.d.ts",
